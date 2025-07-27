@@ -10,26 +10,25 @@ from PIL import Image
 
 from levenshtein_distance import levenshtein_distance
 
-urls = ['http://sol1:8000', 'http://sol2:8000']
+url = 'http://127.0.0.1:8000'
 res = []
 
 attempts_count = 0
-while res != [200, 200]:
-    res.clear()
-    for url in urls:
-        try:
-            response = requests.get(url + '/ping', headers={'Content-Type': 'application/json'})
-            res.append(response.status_code)
-        except:
-            pass
+while res != 200:
+    res = None
+    try:
+        response = requests.get(url + '/ping', headers={'Content-Type': 'application/json'})
+        res = response.status_code
+    except:
+        pass
     attempts_count += 1
     time.sleep(0.5)
     if attempts_count > 30:
         print('cant ping :(')
         exit(1)
 
-encoder_url = urls[0]
-decoder_url = urls[1]
+encoder_url = url
+decoder_url = url
 
 folder_path = 'tests'
 tests_count = 0
@@ -64,4 +63,4 @@ for i in range(1, tests_count + 1):
         print(f'dif: {levenshtein_distance(text, encoded_text)}, file_size: {file_size}')
     except Exception as e:
         print(f'error: {e}')
-        print(f'dif: 10000000000000000000000000000000000, file_size: 10000000000000000000000000000000000')
+        print(f'dif: inf, file_size: inf')
