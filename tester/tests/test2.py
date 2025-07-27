@@ -1,6 +1,8 @@
 import numpy as np
 from PIL import Image
 
+description = "213, gaussian_noise(0 25)"
+
 def f(image: Image, mean=0, sigma=25) -> Image:
     img_array = np.array(image)
     noise = np.random.normal(mean, sigma, img_array.shape).astype(np.int32)

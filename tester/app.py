@@ -40,10 +40,15 @@ if os.path.exists(folder_path):
                 tests_count += 1
     
 for i in range(1, tests_count + 1):
-    print(f'test: {i}')
+    print(f'test: {i}', end=' ')
+    
     text = open(f'tests/test{i}.txt', encoding='utf-8').read()
     module = __import__(f'tests.test{i}', fromlist=['f'])
     f = module.f
+    if "description" in dir(module):
+        print(f"\033[34m{module.description}\033[0m")
+    else:
+        print() 
 
     try:
         data = requests.post(encoder_url + '/encode', data=json.dumps(dict(text=text)), headers={'Content-Type': 'application/json'})    
